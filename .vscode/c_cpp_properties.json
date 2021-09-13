@@ -14,6 +14,21 @@
             "compilerArgs": [
                 "-Wall"
             ]
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}",
+                "${workspaceFolder}/ev3dev-c/source/ev3"
+            ],
+            "defines": [],
+            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+            "cStandard": "gnu11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-gcc-arm",
+            "compilerArgs": [
+                "-Wall"
+            ]
         }
     ],
     "version": 4
