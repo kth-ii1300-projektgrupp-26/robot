@@ -13,7 +13,7 @@
 
 int main() {
 	if(!brick_init()) {
-		printf("Fel uppstod i brick_init().\n");
+		printf("An error occurred in brick_init().\n");
 		return 1;
 	}
 
@@ -22,7 +22,7 @@ int main() {
 
 		tacho_reset(MOTOR_BOTH);
 
-		printf("Åker framåt i en sekund...\n");
+		printf("Moving forward for one second...\n");
 
 		tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.5);
 		tacho_run_forever(MOTOR_BOTH);
@@ -31,7 +31,7 @@ int main() {
 
 		sleep_ms(250);
 
-		printf("Åker bakåt i en sekund...\n");
+		printf("Reversing for one second...\n");
 
 		/* -max_speed ger att båda motorer åker baklänges. */
 		tacho_set_speed_sp(MOTOR_BOTH, -max_speed * 0.5);
@@ -41,7 +41,7 @@ int main() {
 
 		sleep_ms(250);
 
-		printf("Snurrar runt i fem sekunder...\n");
+		printf("Spinning for five seconds...\n");
 
 		/*
 		 * Här sätts den vänstra motorn till att åka framåt och den högra till att åka bakåt.
@@ -55,7 +55,7 @@ int main() {
 		tacho_stop(MOTOR_BOTH);
 	}
 	else {
-		printf("Vänster eller höger motor ej inkopplad.\n");
+		printf("Left and/or right motor not plugged in.\n");
 	}
 
 	brick_uninit();
