@@ -6,10 +6,16 @@
  */
 
 #include "brick.h"
+#include <stdio.h>
+
+#define MOTOR_LEFT OUTB
+#define MOTOR_RIGHT OUTC
+
+#define MOTOR_BOTH (MOTOR_LEFT | MOTOR_RIGHT)
 
 int main() {
 	if(!brick_init()) {
-		/* Ett fel uppstod. */
+		printf("Fel uppstod i brick_init().\n");
 		return 1;
 	}
 
