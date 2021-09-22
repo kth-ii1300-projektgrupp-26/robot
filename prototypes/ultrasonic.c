@@ -6,7 +6,7 @@
 #include "brick.h"
 #include <stdio.h>
 
-#define SENSOR_ULTRASONIC IN4
+#define SENSOR_ULTRASONIC IN3
 
 int main() {
 	if(!brick_init()) {
