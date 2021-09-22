@@ -19,10 +19,17 @@ int main() {
 
 		/* Sätter läget på ultrasonic sensorn till att mäta kontinuerligt i centimeter. */
 		us_set_mode_us_dist_cm(sensor);
-		/* Ultrasonic sensorn lägger in längden från en vägg i value0. */
-		float distance = sensor_get_value0(sensor, 0);
 
-		printf("Distans till vägg: %f\n", distance);
+		while(1) {
+			/*
+			 * Ultrasonic sensorn lägger in längden från en vägg i value0.
+			 * Den mäter med en decimal så värdet måste delas med 10 för att få centimeter.
+			 */
+			float distance = sensor_get_value0(sensor, 0) / 10;
+
+			printf("Distans till vägg: %f cm\n", distance);
+			sleep_ms(100);
+		}
 	}
 	else {
 		printf("Ultrasonic sensor not plugged in.\n");
