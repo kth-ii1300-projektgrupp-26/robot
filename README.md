@@ -1,6 +1,8 @@
 # Projektuppgift Grupp 26
 Källkod för projektuppgiften att bygga en LEGO-robot
 
+[Översikt över robotens uppgifter](documentation/OVERVIEW.md)
+
 ## Användbara länkar
 
 **Dokumentation för ev3dev:** https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/
