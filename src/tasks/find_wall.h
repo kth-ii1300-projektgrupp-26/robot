@@ -5,4 +5,3 @@
  * När uppgiften är klar befinner sig roboten ca 50 cm från väggen och är
  * redo att vända.
  */
-
