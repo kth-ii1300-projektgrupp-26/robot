@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "sensors/gyro.h"
 #include "ports.h"
 
