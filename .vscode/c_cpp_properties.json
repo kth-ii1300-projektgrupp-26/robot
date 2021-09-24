@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}",
+                "${workspaceFolder}/src",
                 "${workspaceFolder}/ev3dev-c/source/ev3"
             ],
             "defines": [],
@@ -18,7 +18,7 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}",
+                "${workspaceFolder}/src",
                 "${workspaceFolder}/ev3dev-c/source/ev3"
             ],
             "defines": [],
