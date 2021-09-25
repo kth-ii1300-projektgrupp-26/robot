@@ -1,3 +1,6 @@
+#ifndef GYRO_H
+#define GYRO_H
+
 #include "brick.h"
 
 /*
@@ -7,3 +10,5 @@
  * Den här funktionen ska endast användas när roboten är helt still.
  */
 void reset_gyro_sensor();
+
+#endif

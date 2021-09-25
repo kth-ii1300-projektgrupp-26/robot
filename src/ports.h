@@ -1,3 +1,6 @@
+#ifndef PORTS_H
+#define PORTS_H
+
 #include "brick.h"
 
 #define MOTOR_LEFT OUTB
@@ -7,3 +10,5 @@
 
 #define SENSOR_GYRO IN2
 #define SENSOR_ULTRASONIC IN3
+
+#endif
