@@ -1,6 +1,8 @@
 #include <stdio.h>
 
 #include "sensors/gyro.h"
+
+#include "brick.h"
 #include "ports.h"
 
 void reset_gyro_sensor() {

@@ -7,6 +7,9 @@
 
 #include "sensors/gyro.h"
 
+#include "tasks/find_wall.h"
+#include "tasks/move_and_avoid.h"
+
 int main() {
 	/* TODO: dessa ska kunna väljas av lärare. */
 	direction_t direction = DIRECTION_LEFT;
@@ -37,12 +40,18 @@ int main() {
 
 	/* Ställ in motorer i rätt läge. */
 	tacho_reset(MOTOR_BOTH);
+	/* TODO: Testa om det här är bästa sättet att bromsa. */
+	tacho_set_stop_action_brake(MOTOR_BOTH);
+
 	/* Sätter in rätt läge på gyro sensorn. */
 	reset_gyro_sensor();
 	/* Sätter läget på ultrasonic sensorn till att mäta kontinuerligt i centimeter. */
 	us_set_mode_us_dist_cm(SENSOR_ULTRASONIC);
 
 	printf("Done! The robot is now ready for delivery.\n");
+
+	task_find_wall(to_other_side);
+	task_move_and_avoid(direction);
 
 	brick_uninit();
 	return 0;

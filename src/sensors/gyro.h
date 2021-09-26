@@ -1,8 +1,6 @@
 #ifndef GYRO_H
 #define GYRO_H
 
-#include "brick.h"
-
 /*
  * Kalibrerar gyro sensorn. Det här gör att punkten där roboten
  * befinner sig nu räknas som nollpunkten (alltså att den mäter 0 grader).
