@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "youssef_1": "c",
+        "stdbool.h": "c",
+        "brick.h": "c",
+        "movement.h": "c",
+        "ports.h": "c"
+    }
+}
