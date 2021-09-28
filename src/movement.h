@@ -14,16 +14,7 @@ typedef enum {
 	DIRECTION_RIGHT
 } direction_t;
 
-/*
- * EV3 motorer mäter "position" genom rotation av hjulen. När den har roterat
- * 360 grader så har roboten alltså rört sig en längd som är lika med omkretsen
- * på hjulen.
- *
- * TODO: kan tacho_get_count_per_m göra det här?
- */
-#define WHEEL_CIRCUMFERENCE_METER 0
-
-/* Gör om rotationern på hjulen till längden som roboten har åkt. */
+/* .rotationern på hjulen till längden som roboten har åkt. */
 float wheel_rotation_to_meter(float rotation);
 
 /* Gör om längden som roboten har åkt till rotationer på hjulen. */
