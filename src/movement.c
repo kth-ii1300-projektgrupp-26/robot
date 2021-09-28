@@ -1,4 +1,5 @@
 #include "movement.h"
+#include "ports.h"
 
 #include <stdio.h>
 
@@ -7,10 +8,13 @@
 
 float wheel_rotation_to_meter(float rotation) {
 	/* TODO */
+	int R_to_M = tacho_get_count_per_m(MOTOR_LEFT, 0 );
+
 }
 
 float meter_to_wheel_rotation(float length) {
 	/* TODO */
+	tacho_get_count_per_rot(, 0)
 }
 
 motor_position_t rotate_robot(float degrees) {
