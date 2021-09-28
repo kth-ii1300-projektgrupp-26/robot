@@ -7,6 +7,7 @@
 
 #include "sensors/gyro.h"
 
+#include "tasks/drop_book.h"
 #include "tasks/find_wall.h"
 #include "tasks/move_and_avoid.h"
 
@@ -52,6 +53,7 @@ int main() {
 
 	task_find_wall(to_other_side);
 	task_move_and_avoid(direction);
+	task_drop_book();
 
 	brick_uninit();
 	return 0;

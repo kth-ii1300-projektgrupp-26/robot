@@ -11,6 +11,7 @@ gcc -c src/sensors/ultrasonic.c $GCC_ARGS -o build/sensors/ultrasonic.o
 
 # Tasks
 mkdir -p build/tasks
+gcc -c src/tasks/drop_book.c $GCC_ARGS -o build/tasks/drop_book.o
 gcc -c src/tasks/find_wall.c $GCC_ARGS -o build/tasks/find_wall.o
 gcc -c src/tasks/move_and_avoid.c $GCC_ARGS -o build/tasks/move_and_avoid.o
 
@@ -21,6 +22,7 @@ gcc -c src/main.c $GCC_ARGS -o build/main.o
 gcc build/main.o \
 	build/movement.o \
 	\
+	build/tasks/drop_book.o \
 	build/tasks/find_wall.o \
 	build/tasks/move_and_avoid.o \
 	\
