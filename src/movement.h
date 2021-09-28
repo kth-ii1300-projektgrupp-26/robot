@@ -30,11 +30,21 @@ float wheel_rotation_to_meter(float rotation);
 float meter_to_wheel_rotation(float length);
 
 /*
+ * "Motor position type".
+ *
+ * En struktur med värden för både vänstra och högra hjulet.
+ */
+typedef struct {
+	int left;
+	int right;
+} motor_position_t;
+
+/*
  * Roterar roboten med x antal grader. Minustecken betyder vänster och
  * plustecken betyder höger.
  *
  * Funktionen returnerar skillnad i vänster och höger motors position.
  */
-float rotate_robot(float degrees); /* TODO: kommer skillnaden på båda motorer att vara exakt samma? */
+motor_position_t rotate_robot(float degrees);
 
 #endif
