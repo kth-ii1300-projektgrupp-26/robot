@@ -1,21 +1,19 @@
 #include "movement.h"
 
 #include <stdio.h>
+#include <math.h>
 
 #include "ports.h"
 #include "sensors/gyro.h"
 
 float wheel_rotation_to_meter(float rotation) {
-	
-	int R_to_M = tacho_get_count_per_m(MOTOR_LEFT, 0 );
-	float Distance = rotation / R_to_M;
+	float Distance = rotation / ROTATION_TO_M;
 	return(Distance);
 }
 
-float meter_to_wheel_rotation(float length) 
+float meter_to_wheel_rotation(float length)
 {
-	int R_to_M = tacho_get_count_per_m(MOTOR_LEFT, 0 );
-	float Degree = length * R_to_M;
+	float Degree = length * ROTATION_TO_M;
 	return(Degree);
 }
 
