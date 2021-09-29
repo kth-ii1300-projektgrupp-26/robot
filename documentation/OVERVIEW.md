@@ -56,8 +56,8 @@ TODO
 
 
 #En ide för hur roboten ska undvika hinder på väg till andra X'et
-!.[.]hinder1.1.jpg
-!.[.]hinder1.2.jpg
+!.[.](hinder1.1.jpg)
+!.[.](hinder1.2.jpg)
 
 Om roboten hittar någonting i 20 cm framför sig den stoppar, vänder sig 45 grader och skanar för andra närligander objekt.
 
