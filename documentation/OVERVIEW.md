@@ -52,3 +52,17 @@ TODO
 **Steg 4 "Hitta tillbaka till startpunkt"**
 
 TODO
+
+
+
+#En ide för hur roboten ska undvika hinder på väg till andra X'et
+!.[.](hinder1.1.jpg)
+!.[.](hinder1.2.jpg)
+
+Om roboten hittar någonting i 20 cm framför sig den stoppar, vänder sig 45 grader och skanar för andra närligander objekt.
+
+Ifall det finns inte då:
+TODO 
+
+Ifall det finns då:
+spara vinkel för den närligande objekt, lägg till 10 grader på den och kör en viss avstånd sen vända sig igen mot X och kör tills den når den.
