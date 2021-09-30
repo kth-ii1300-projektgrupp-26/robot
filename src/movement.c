@@ -1,4 +1,5 @@
 #include "movement.h"
+#include "brick.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -6,14 +7,14 @@
 #include "ports.h"
 #include "sensors/gyro.h"
 
-float wheel_rotation_to_meter(float rotation) {
-	float Distance = rotation / ROTATION_TO_M;
+float TC_to_meter(float rotation) {
+	float Distance = WHEEL_CIRCUMFERENCE_METER * (360/rotation);
 	return(Distance);
 }
 
 float meter_to_wheel_rotation(float length)
 {
-	float Degree = length * ROTATION_TO_M;
+	float Degree = (WHEEL_CIRCUMFERENCE_METER * 360) / length;
 	return(Degree);
 }
 

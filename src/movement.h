@@ -22,8 +22,6 @@ typedef enum {
  * Referens: https://ev3lessons.com/en/Resources/WheelConverter/
  */
 #define WHEEL_CIRCUMFERENCE_METER (17.59292 / 100.0)
-/* TODO: FEL */
-#define ROTATION_TO_M (360.0 / WHEEL_CIRCUMFERENCE_METER)
 
 /* .rotationern på hjulen till längden som roboten har åkt. */
 float wheel_rotation_to_meter(float rotation);
