@@ -15,12 +15,21 @@ void task_find_wall(bool to_other_side) {
 		/* TODO: error */
 	}
 	else {
-		/* TODO: hitta den närmaste vägen istället för alltid rotera höger*/
-		rotate_robot(closest_angle);
-		reset_gyro_sensor();
+		if(360 - closest_angle < closest_angle) {
+			rotate_robot(-360 + closest_angle);
+		}
+		else {
+			rotate_robot(closest_angle);
+		}
+
+		if(to_other_side) {
+			subtask_move_to_other_side();
+		}
+
+		subtask_control_distance_to_wall();
 	}
 
-	subtask_control_distance_to_wall();
+	reset_gyro_sensor();
 }
 
 float subtask_find_closest_wall_angle() {
@@ -58,7 +67,19 @@ float subtask_find_closest_wall_angle() {
 }
 
 void subtask_move_to_other_side() {
-	/* TODO */
+	/* Roboten är nu vänd mot den andra väggen. */
+	rotate_robot(180);
+
+	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.25;
+	tacho_set_speed_sp(MOTOR_BOTH, speed);
+
+	tacho_run_forever(MOTOR_BOTH);
+
+	while(!can_find_object() || get_distance_to_object() > 0.5) {
+		/* Vänta på att roboten är framme. */
+	}
+
+	tacho_stop(MOTOR_BOTH);
 }
 
 void subtask_control_distance_to_wall() {

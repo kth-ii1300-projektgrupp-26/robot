@@ -6,6 +6,7 @@
 #include "ports.h"
 
 #include "sensors/gyro.h"
+#include "sensors/ultrasonic.h"
 
 #include "tasks/drop_book.h"
 #include "tasks/find_wall.h"
@@ -14,7 +15,7 @@
 int main() {
 	/* TODO: dessa ska kunna väljas av lärare. */
 	direction_t direction = DIRECTION_LEFT;
-	bool to_other_side = false;
+	bool to_other_side = true;
 
 	if(!brick_init()) {
 		printf("Fel uppstod i brick_init().\n");
@@ -41,7 +42,6 @@ int main() {
 
 	/* Ställ in motorer i rätt läge. */
 	tacho_reset(MOTOR_BOTH);
-	/* TODO: Testa om det här är bästa sättet att bromsa. */
 	tacho_set_stop_action_brake(MOTOR_BOTH);
 
 	/* Sätter in rätt läge på gyro sensorn. */
@@ -52,6 +52,20 @@ int main() {
 	printf("Done! The robot is now ready for delivery.\n");
 
 	task_find_wall(to_other_side);
+
+	/*
+	 * När roboten har åkt till andra sidan har den bytt perspektiv så vänster blir
+	 * höger och höger blir vänster.
+	 */
+	if(to_other_side) {
+		if(direction == DIRECTION_LEFT) {
+			direction = DIRECTION_RIGHT;
+		}
+		else if(direction == DIRECTION_RIGHT) {
+			direction = DIRECTION_LEFT;
+		}
+	}
+
 	task_move_and_avoid(direction);
 	task_drop_book();
 
