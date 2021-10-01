@@ -62,5 +62,27 @@ void subtask_move_to_other_side() {
 }
 
 void subtask_control_distance_to_wall() {
-	/* TODO */
+	float distance = sensor_get_value0(SENSOR_ULTRASONIC, 0) / 1000;
+	if(can_find_object()){
+		// minst 45 cm högst 55 cm
+		if(distance < 0.45 || distance > 0.55)
+		{
+			int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.1;
+
+		tacho_reset(MOTOR_BOTH);
+
+		printf("Moving forward for one second...\n");
+
+		tacho_set_speed_sp(MOTOR_BOTH, -max_speed * 0.1);
+		tacho_run_forever(MOTOR_BOTH);
+			tacho_run_forever(MOTOR_BOTH);
+		}
+		
+		
+	}
+	if (get_distance_to_object())
+	{
+		
+	}
+	
 }
