@@ -8,7 +8,7 @@
 #include "sensors/gyro.h"
 
 float wheel_rotation_to_meter(float rotation) {
-	float Distance = WHEEL_CIRCUMFERENCE_METER * (360/rotation);
+	float Distance = (WHEEL_CIRCUMFERENCE_METER * rotation) / 360;
 	return(Distance);
 }
 
