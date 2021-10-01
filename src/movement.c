@@ -14,7 +14,7 @@ float wheel_rotation_to_meter(float rotation) {
 
 float meter_to_wheel_rotation(float length)
 {
-	float Degree = (WHEEL_CIRCUMFERENCE_METER * 360) / length;
+	float Degree = (length * 360) / WHEEL_CIRCUMFERENCE_METER;
 	return(Degree);
 }
 
