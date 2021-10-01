@@ -7,7 +7,7 @@
 #include "ports.h"
 #include "sensors/gyro.h"
 
-float TC_to_meter(float rotation) {
+float wheel_rotation_to_meter(float rotation) {
 	float Distance = WHEEL_CIRCUMFERENCE_METER * (360/rotation);
 	return(Distance);
 }
