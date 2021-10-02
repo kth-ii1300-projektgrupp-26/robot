@@ -8,7 +8,11 @@ void task_drop_book() {
 }
 
 void subtask_position_for_drop() {
+	rotate_robot(90);
 	
+
+
+
 }
 
 void subtask_drop_with_motor() {
