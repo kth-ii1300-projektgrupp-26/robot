@@ -5,6 +5,7 @@
         "brick.h": "c",
         "movement.h": "c",
         "ports.h": "c",
-        "drop_book.h": "c"
+        "drop_book.h": "c",
+        "math.h": "c"
     }
 }
