@@ -15,7 +15,7 @@ void task_find_wall(bool to_other_side) {
 		/* TODO: error */
 	}
 	else {
-			rotate_robot(closest_angle);
+		rotate_robot(closest_angle);
 
 		if(to_other_side) {
 			subtask_move_to_other_side();
@@ -86,26 +86,20 @@ void subtask_move_to_other_side() {
 }
 
 void subtask_control_distance_to_wall() {
+	/* hur långt roboten är till väggen nu */
 	float distance = sensor_get_value0(SENSOR_ULTRASONIC, 0) / 1000;
+	int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.1;
+
 	if(can_find_object()){
+		float distance_to_50cm;
+		if(distance > 0.45 || distance < 0.55) {
 		// minst 45 cm högst 55 cm
-		if(distance < 0.45 || distance > 0.55)
-		{
-			int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.1;
 
-		tacho_reset(MOTOR_BOTH);
-
-		printf("Moving forward for one second...\n");
-
-		tacho_set_speed_sp(MOTOR_BOTH, -max_speed * 0.1);
-		tacho_run_forever(MOTOR_BOTH);
-			tacho_run_forever(MOTOR_BOTH);
+			// matte: hur långt måste den åka för att vara 50 cm från väggen?
+			 distance_to_50cm = distance - 0.5;
+			move(distance_to_50cm, 0.1);
 		}
 
-
-	}
-	if (get_distance_to_object())
-	{
 
 	}
 

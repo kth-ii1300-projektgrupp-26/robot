@@ -24,7 +24,18 @@ void task_move_and_avoid(direction_t direction) {
 }
 
 void subtask_setup_move(direction_t direction) {
-	/* TODO */
+
+if (direction == DIRECTION_LEFT ){
+rotate_robot(-90);
+}
+if(direction == DIRECTION_RIGHT){
+	rotate_robot(90);
+	}
+	int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0);
+
+tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.3);
+		tacho_run_forever(MOTOR_BOTH);
+
 }
 
 bool subtask_update_move() {
