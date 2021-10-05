@@ -69,20 +69,24 @@ motor_position_t rotate_robot(float degrees) {
 }
 
 void move (float distance, float speed) {
-	int max_speed = tacho_get_max_speed(MOTOR_BOTH,0);
+	if(distance < 0) {
+		speed = -speed;
+	}
+
+	int max_speed = tacho_get_max_speed(MOTOR_LEFT,0);
 	tacho_set_speed_sp(MOTOR_BOTH, max_speed * speed);
 
-
-	int goal_rot = meter_to_wheel_rotation(distance);
 	int current_rot = tacho_get_position(MOTOR_LEFT, 0);
+	printf("MOTOR_LEFT: %d, MOTOR_RIGHT: %d\n", tacho_get_position(MOTOR_LEFT, 0), tacho_get_position(MOTOR_RIGHT, 0));
+	int goal_rot = meter_to_wheel_rotation(distance) + current_rot;
 
-	while (current_rot != goal_rot)
+	printf("current_rot: %d, goal_rot: %d\n", current_rot, goal_rot);
+
+	tacho_run_forever(MOTOR_BOTH);
+/*use run to rel or fix an if statment*/
+	while (current_rot != goal_rot ) /* TODO: kolla om det här fungerar */
 	{
-		tacho_run_forever(MOTOR_BOTH);
 		current_rot = tacho_get_position(MOTOR_LEFT, 0);
 	}
 	tacho_stop(MOTOR_BOTH);
-{
-
-
 }

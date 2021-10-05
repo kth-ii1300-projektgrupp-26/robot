@@ -29,7 +29,10 @@ float wheel_rotation_to_meter(float rotation);
 /* Gör om längden som roboten har åkt till rotationer på hjulen. */
 float meter_to_wheel_rotation(float length);
 
-/* Funktion som tar in avstånd och hastighet och rör på robotten. */
+/*
+ * Funktion som tar in avstånd och hastighet och rör på robotten.
+ * distance får vara negativt men speed måste alltid vara mellan 0-1 (0% till 100%).
+ */
 void move( float distance, float speed);
 
 /*
