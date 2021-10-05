@@ -13,9 +13,8 @@
 #include "tasks/move_and_avoid.h"
 
 int main() {
-	/* TODO: dessa ska kunna väljas av lärare. */
 	direction_t direction = DIRECTION_LEFT;
-	bool to_other_side = true;
+	bool to_other_side = false;
 
 	if(!brick_init()) {
 		printf("Fel uppstod i brick_init().\n");
@@ -49,8 +48,6 @@ int main() {
 	/* Sätter läget på ultrasonic sensorn till att mäta kontinuerligt i centimeter. */
 	us_set_mode_us_dist_cm(SENSOR_ULTRASONIC);
 
-	printf("Done! The robot is now ready for delivery.\n");
-
 	task_find_wall(to_other_side);
 
 	/*
@@ -66,8 +63,8 @@ int main() {
 		}
 	}
 
-	task_move_and_avoid(direction);
-	task_drop_book();
+	//task_move_and_avoid(direction);
+	//task_drop_book();
 
 	brick_uninit();
 	return 0;

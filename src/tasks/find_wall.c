@@ -15,36 +15,32 @@ void task_find_wall(bool to_other_side) {
 		/* TODO: error */
 	}
 	else {
-		/* TODO: kontrollera det här. */
-		if(360 - closest_angle < closest_angle) {
-			rotate_robot(-360 + closest_angle);
-		}
-		else {
 			rotate_robot(closest_angle);
-		}
 
 		if(to_other_side) {
 			subtask_move_to_other_side();
 		}
 
-		subtask_control_distance_to_wall();
+		//subtask_control_distance_to_wall();
 	}
-
-	reset_gyro_sensor();
 }
 
 float subtask_find_closest_wall_angle() {
 	/* NO_WALL_FOUND = inget hittat än */
-	float closest_angle = NO_WALL_FOUND;
+	float closest_angle_start = NO_WALL_FOUND;
+	float closest_angle_end = NO_WALL_FOUND;
 	float closest_angle_distance = NO_WALL_FOUND;
-	float angle = sensor_get_value0(SENSOR_GYRO, 0);
 
 	/* Sätter roboten till att rotera höger. */
-	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.1; /* TODO: prova lägre hastighet och se om det är bättre. */
+	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * ROTATION_SPEED; /* TODO: prova lägre hastighet och se om det är bättre. */
 	tacho_set_speed_sp(MOTOR_LEFT, speed);
 	tacho_set_speed_sp(MOTOR_RIGHT, -speed);
 
 	tacho_run_forever(MOTOR_BOTH);
+
+	float angle = sensor_get_value0(SENSOR_GYRO, 0);
+
+	printf("subtask_find_closest_wall_angle(): angle at start %f\n", angle);
 
 	while(angle < 360 /* ett helt varv */) {
 		if(can_find_object()) {
@@ -54,8 +50,8 @@ float subtask_find_closest_wall_angle() {
 			 * Om vi inte har hittat någon vägg tidigare ELLER om det är kortare
 			 * till den här väggen sätter vi det här som den nya "närmaste väggen".
 			 */
-			if(closest_angle_distance == NO_WALL_FOUND || distance <= closest_angle_distance) {
-				closest_angle = angle;
+			if(closest_angle_distance == NO_WALL_FOUND || distance < closest_angle_distance) {
+				closest_angle_start = angle;
 				closest_angle_distance = distance;
 			}
 		}
@@ -63,8 +59,13 @@ float subtask_find_closest_wall_angle() {
 		angle = sensor_get_value0(SENSOR_GYRO, 0);
 	}
 
+	printf("subtask_find_closest_wall_angle(): angle at end %f\n", angle);
+	printf("subtask_find_closest_wall_angle(): closest angle start %f end %f\n", closest_angle_start, closest_angle_end);
+
 	tacho_stop(MOTOR_BOTH);
-	return closest_angle;
+	sleep_ms(200);
+
+	return closest_angle_start;
 }
 
 void subtask_move_to_other_side() {
@@ -81,6 +82,7 @@ void subtask_move_to_other_side() {
 	}
 
 	tacho_stop(MOTOR_BOTH);
+	sleep_ms(200);
 }
 
 void subtask_control_distance_to_wall() {

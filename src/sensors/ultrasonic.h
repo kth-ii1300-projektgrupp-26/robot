@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 /*
- * EV3 Ultrasonic Sensor kan mäta mellan 0 och 250 cm, så om det inte
+ * EV3 Ultrasonic Sensor kan mäta mellan 3 och 250 cm, så om det inte
  * finns någon vägg eller annat objekt högst 250 cm från roboten
  * returnerar den här funktionen false.
  */

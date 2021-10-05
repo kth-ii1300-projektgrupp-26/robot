@@ -22,11 +22,12 @@ motor_position_t rotate_robot(float degrees) {
 	float initial_angle = sensor_get_value0(SENSOR_GYRO, 0);
 	float target_angle = initial_angle + degrees;
 
-	int initial_motor_pos_left = tacho_get_position(MOTOR_LEFT, 0);
-	int initial_motor_pos_right = tacho_get_position(MOTOR_RIGHT, 0);
+	motor_position_t initial_motor_pos;
+	initial_motor_pos.left = tacho_get_position(MOTOR_LEFT, 0);
+	initial_motor_pos.right = tacho_get_position(MOTOR_RIGHT, 0);
 
-	/* 0.1 verkar fungera bra. Kan behöva testas mer. */
-	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.1;
+	/* 0.05 verkar fungera bra. Kan behöva testas mer. */
+	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * ROTATION_SPEED;
 
 	/*
 	 * Om roboten ska rotera åt vänster åker vänster hjul bakåt och höger hjul framåt.
@@ -54,15 +55,15 @@ motor_position_t rotate_robot(float degrees) {
 	printf("Initial angle: %f, angle: %f, difference: %f\n", initial_angle, angle, fabs(angle - initial_angle));
 	printf(
 		"Initial motor pos: {%d, %d}, motor pos: {%d, %d}\n",
-		initial_motor_pos_left, initial_motor_pos_right,
+		initial_motor_pos.left, initial_motor_pos.right,
 		tacho_get_position(MOTOR_LEFT, 0), tacho_get_position(MOTOR_RIGHT, 0)
 	);
 
 	motor_position_t difference;
 	/* Hur många grader vänster motor har roterat. */
-	difference.left = tacho_get_position(MOTOR_LEFT, 0) - initial_motor_pos_left;
+	difference.left = tacho_get_position(MOTOR_LEFT, 0) - initial_motor_pos.left;
 	/* Hur många grader höger motor har roterat. */
-	difference.right = tacho_get_position(MOTOR_RIGHT, 0) - initial_motor_pos_right;
+	difference.right = tacho_get_position(MOTOR_RIGHT, 0) - initial_motor_pos.right;
 
 	return difference;
 }

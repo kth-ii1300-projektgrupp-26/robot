@@ -42,6 +42,9 @@ typedef struct {
 	int right;
 } motor_position_t;
 
+/* Hur snabbt roboten ska rotera. */
+#define ROTATION_SPEED 0.05
+
 /*
  * Roterar roboten med x antal grader. Minustecken betyder vänster och
  * plustecken betyder höger.
