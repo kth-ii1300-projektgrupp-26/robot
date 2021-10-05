@@ -15,6 +15,7 @@ void task_find_wall(bool to_other_side) {
 		/* TODO: error */
 	}
 	else {
+		/* TODO: kontrollera det här. */
 		if(360 - closest_angle < closest_angle) {
 			rotate_robot(-360 + closest_angle);
 		}
@@ -98,12 +99,12 @@ void subtask_control_distance_to_wall() {
 		tacho_run_forever(MOTOR_BOTH);
 			tacho_run_forever(MOTOR_BOTH);
 		}
-		
-		
+
+
 	}
 	if (get_distance_to_object())
 	{
-		
+
 	}
-	
+
 }
