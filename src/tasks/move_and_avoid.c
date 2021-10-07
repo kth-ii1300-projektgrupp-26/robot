@@ -15,10 +15,11 @@ void task_move_and_avoid(direction_t direction) {
 	start_rotation = tacho_get_position(MOTOR_LEFT, 0);
 	goal_rotation = start_rotation + meter_to_wheel_rotation(2.5);
 
-	//subtask_setup_move(direction);
-	while(subtask_update_move()) {
+	subtask_setup_move(direction);
+	move(2.5, 0.2);
+	/*while(subtask_update_move()) {
 
-	}
+	}*/
 
 	// stoppa motor
 }
@@ -31,10 +32,10 @@ rotate_robot(-90);
 if(direction == DIRECTION_RIGHT){
 	rotate_robot(90);
 	}
-	int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0);
+	/*int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0);
 
 tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.3);
-		tacho_run_forever(MOTOR_BOTH);
+		tacho_run_forever(MOTOR_BOTH);*/
 
 }
 

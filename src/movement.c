@@ -19,9 +19,6 @@ float meter_to_wheel_rotation(float length)
 }
 
 motor_position_t rotate_robot(float degrees) {
-	float initial_angle = sensor_get_value0(SENSOR_GYRO, 0);
-	float target_angle = initial_angle + degrees;
-
 	motor_position_t initial_motor_pos;
 	initial_motor_pos.left = tacho_get_position(MOTOR_LEFT, 0);
 	initial_motor_pos.right = tacho_get_position(MOTOR_RIGHT, 0);
@@ -43,6 +40,9 @@ motor_position_t rotate_robot(float degrees) {
 	}
 
 	tacho_run_forever(MOTOR_BOTH);
+
+	float initial_angle = sensor_get_value0(SENSOR_GYRO, 0);
+	float target_angle = initial_angle + degrees;
 
 	float angle = initial_angle;
 	/* Motorer är på tills gyro sensorn säger att vi är vid exakt rätt vinkel. */

@@ -1,6 +1,7 @@
 #include "tasks/find_wall.h"
 
 #include <stdio.h>
+#include <math.h>
 
 #include "movement.h"
 #include "ports.h"
@@ -27,8 +28,7 @@ void task_find_wall(bool to_other_side) {
 
 float subtask_find_closest_wall_angle() {
 	/* NO_WALL_FOUND = inget hittat än */
-	float closest_angle_start = NO_WALL_FOUND;
-	float closest_angle_end = NO_WALL_FOUND;
+	float closest_angle = NO_WALL_FOUND;
 	float closest_angle_distance = NO_WALL_FOUND;
 
 	/* Sätter roboten till att rotera höger. */
@@ -51,7 +51,7 @@ float subtask_find_closest_wall_angle() {
 			 * till den här väggen sätter vi det här som den nya "närmaste väggen".
 			 */
 			if(closest_angle_distance == NO_WALL_FOUND || distance < closest_angle_distance) {
-				closest_angle_start = angle;
+				closest_angle = angle;
 				closest_angle_distance = distance;
 			}
 		}
@@ -60,12 +60,13 @@ float subtask_find_closest_wall_angle() {
 	}
 
 	printf("subtask_find_closest_wall_angle(): angle at end %f\n", angle);
-	printf("subtask_find_closest_wall_angle(): closest angle start %f end %f\n", closest_angle_start, closest_angle_end);
+	printf("subtask_find_closest_wall_angle(): closest angle %f\n", closest_angle);
+	printf("subtask_find_closest_wall_angle(): closest angle distance %f\n", closest_angle_distance);
 
 	tacho_stop(MOTOR_BOTH);
 	sleep_ms(200);
 
-	return closest_angle_start;
+	return closest_angle;
 }
 
 void subtask_move_to_other_side() {
