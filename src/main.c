@@ -13,8 +13,8 @@
 #include "tasks/move_and_avoid.h"
 
 int main() {
-	direction_t direction = DIRECTION_LEFT;
-	bool to_other_side = false;
+	direction_t direction = BUILD_DIRECTION;
+	bool to_other_side = BUILD_TO_OTHER_SIDE;
 
 	if(!brick_init()) {
 		printf("Fel uppstod i brick_init().\n");
@@ -63,7 +63,7 @@ int main() {
 		}
 	}
 
-	//task_move_and_avoid(direction);
+	task_move_and_avoid(direction);
 	//task_drop_book();
 
 	brick_uninit();

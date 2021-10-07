@@ -6,7 +6,10 @@
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/ev3dev-c/source/ev3"
             ],
-            "defines": [],
+            "defines": [
+                "BUILD_DIRECTION=DIRECTION_LEFT",
+                "BUILD_TO_OTHER_SIDE=false"
+            ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu11",
             "cppStandard": "c++14",
@@ -21,7 +24,10 @@
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/ev3dev-c/source/ev3"
             ],
-            "defines": [],
+            "defines": [
+                "BUILD_DIRECTION=DIRECTION_LEFT",
+                "BUILD_TO_OTHER_SIDE=false"
+            ],
             "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
             "cStandard": "gnu11",
             "cppStandard": "c++14",

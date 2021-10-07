@@ -3,7 +3,7 @@
 
 # Docker kräver att den här GCC används
 GCC=arm-linux-gnueabi-gcc
-GCC_ARGS="-lev3dev-c -Isrc -I/usr/local/include -Wall -Werror-implicit-function-declaration"
+GCC_ARGS="-lev3dev-c -lm -Isrc -I/usr/local/include -Wall -Werror-implicit-function-declaration"
 
 mkdir -p build bin
 
@@ -20,19 +20,51 @@ $GCC -c src/tasks/move_and_avoid.c $GCC_ARGS -o build/tasks/move_and_avoid.o
 
 # General
 $GCC -c src/movement.c $GCC_ARGS -o build/movement.o
-$GCC -c src/main.c $GCC_ARGS -o build/main.o
 
-$GCC build/main.o \
+# Bygg fyra versioner av main.c som ger de fyra programmen/uppgifterna
+$GCC -c src/main.c -DBUILD_DIRECTION=DIRECTION_RIGHT -DBUILD_TO_OTHER_SIDE=false $GCC_ARGS -o build/main_1.o
+$GCC -c src/main.c -DBUILD_DIRECTION=DIRECTION_LEFT -DBUILD_TO_OTHER_SIDE=false $GCC_ARGS -o build/main_2.o
+$GCC -c src/main.c -DBUILD_DIRECTION=DIRECTION_RIGHT -DBUILD_TO_OTHER_SIDE=true $GCC_ARGS -o build/main_3.o
+$GCC -c src/main.c -DBUILD_DIRECTION=DIRECTION_LEFT -DBUILD_TO_OTHER_SIDE=true $GCC_ARGS -o build/main_4.o
+
+# Program 1
+$GCC build/main_1.o \
 	build/movement.o \
 	\
-	build/tasks/drop_book.o \
-	build/tasks/find_wall.o \
-	build/tasks/move_and_avoid.o \
-	\
-	build/sensors/gyro.o \
-	build/sensors/ultrasonic.o \
+	build/tasks/* \
+	build/sensors/* \
 	\
 	$GCC_ARGS \
-	-o bin/mailman
+	-o bin/mailman_task1_R
+
+# Program 2
+$GCC build/main_2.o \
+	build/movement.o \
+	\
+	build/tasks/* \
+	build/sensors/* \
+	\
+	$GCC_ARGS \
+	-o bin/mailman_task2_L
+
+# Program 3 (os = other side)
+$GCC build/main_3.o \
+	build/movement.o \
+	\
+	build/tasks/* \
+	build/sensors/* \
+	\
+	$GCC_ARGS \
+	-o bin/mailman_task3_R_OS
+
+# Program 4 (os = other side)
+$GCC build/main_4.o \
+	build/movement.o \
+	\
+	build/tasks/* \
+	build/sensors/* \
+	\
+	$GCC_ARGS \
+	-o bin/mailman_task4_L_OS
 
 echo "Done!"
