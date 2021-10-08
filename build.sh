@@ -5,6 +5,7 @@
 GCC=arm-linux-gnueabi-gcc
 GCC_ARGS="-lev3dev-c -lm -Isrc -I/usr/local/include -Wall -Werror-implicit-function-declaration"
 
+rm -R build bin
 mkdir -p build bin
 
 # Sensors
@@ -14,12 +15,13 @@ $GCC -c src/sensors/ultrasonic.c $GCC_ARGS -o build/sensors/ultrasonic.o
 
 # Tasks
 mkdir -p build/tasks
-$GCC -c src/tasks/drop_book.c $GCC_ARGS -o build/tasks/drop_book.o
+$GCC -c src/tasks/hold_book.c $GCC_ARGS -o build/tasks/hold_book.o
 $GCC -c src/tasks/find_wall.c $GCC_ARGS -o build/tasks/find_wall.o
 $GCC -c src/tasks/move_and_avoid.c $GCC_ARGS -o build/tasks/move_and_avoid.o
 
 # General
 $GCC -c src/movement.c $GCC_ARGS -o build/movement.o
+$GCC -c src/sounds.c $GCC_ARGS -o build/sounds.o
 
 # Bygg fyra versioner av main.c som ger de fyra programmen/uppgifterna
 $GCC -c src/main.c -DBUILD_DIRECTION=DIRECTION_RIGHT -DBUILD_TO_OTHER_SIDE=false $GCC_ARGS -o build/main_1.o
@@ -30,6 +32,7 @@ $GCC -c src/main.c -DBUILD_DIRECTION=DIRECTION_LEFT -DBUILD_TO_OTHER_SIDE=true $
 # Program 1
 $GCC build/main_1.o \
 	build/movement.o \
+	build/sounds.o \
 	\
 	build/tasks/* \
 	build/sensors/* \
@@ -40,6 +43,7 @@ $GCC build/main_1.o \
 # Program 2
 $GCC build/main_2.o \
 	build/movement.o \
+	build/sounds.o \
 	\
 	build/tasks/* \
 	build/sensors/* \
@@ -50,6 +54,7 @@ $GCC build/main_2.o \
 # Program 3 (os = other side)
 $GCC build/main_3.o \
 	build/movement.o \
+	build/sounds.o \
 	\
 	build/tasks/* \
 	build/sensors/* \
@@ -60,6 +65,7 @@ $GCC build/main_3.o \
 # Program 4 (os = other side)
 $GCC build/main_4.o \
 	build/movement.o \
+	build/sounds.o \
 	\
 	build/tasks/* \
 	build/sensors/* \

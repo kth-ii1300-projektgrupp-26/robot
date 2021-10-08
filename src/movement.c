@@ -19,11 +19,12 @@ float meter_to_wheel_rotation(float length)
 }
 
 motor_position_t rotate_robot(float degrees) {
+	reset_gyro_sensor();
+
 	motor_position_t initial_motor_pos;
 	initial_motor_pos.left = tacho_get_position(MOTOR_LEFT, 0);
 	initial_motor_pos.right = tacho_get_position(MOTOR_RIGHT, 0);
 
-	/* 0.05 verkar fungera bra. Kan behöva testas mer. */
 	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * ROTATION_SPEED;
 
 	/*
@@ -41,23 +42,13 @@ motor_position_t rotate_robot(float degrees) {
 
 	tacho_run_forever(MOTOR_BOTH);
 
-	float initial_angle = sensor_get_value0(SENSOR_GYRO, 0);
-	float target_angle = initial_angle + degrees;
-
-	float angle = initial_angle;
+	float angle = sensor_get_value0(SENSOR_GYRO, 0);
 	/* Motorer är på tills gyro sensorn säger att vi är vid exakt rätt vinkel. */
-	while(angle != target_angle) {
+	while(angle != degrees) {
 		angle = sensor_get_value0(SENSOR_GYRO, 0);
 	}
 
 	tacho_stop(MOTOR_BOTH);
-
-	printf("Initial angle: %f, angle: %f, difference: %f\n", initial_angle, angle, fabs(angle - initial_angle));
-	printf(
-		"Initial motor pos: {%d, %d}, motor pos: {%d, %d}\n",
-		initial_motor_pos.left, initial_motor_pos.right,
-		tacho_get_position(MOTOR_LEFT, 0), tacho_get_position(MOTOR_RIGHT, 0)
-	);
 
 	motor_position_t difference;
 	/* Hur många grader vänster motor har roterat. */
@@ -83,7 +74,7 @@ void move (float distance, float speed) {
 	printf("current_rot: %d, goal_rot: %d\n", current_rot, goal_rot);
 
 	tacho_run_forever(MOTOR_BOTH);
-/*use run to rel or fix an if statment*/
+	/*use run to rel or fix an if statment*/
 	while (current_rot != goal_rot ) /* TODO: kolla om det här fungerar */
 	{
 		current_rot = tacho_get_position(MOTOR_LEFT, 0);
