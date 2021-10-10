@@ -36,6 +36,27 @@ bool subtask_update_move();
  * antal grader är för att rotationen av roboten inte ska räknas med
  * (om den behöver undvika hinder).
  */
-float subtask_get_distance_left(motor_position_t ignore_degrees);
+float subtask_get_distance_left();
+
+/*
+ * Kollar om det finns något framför roboten som den måste undvika.
+ * Den här funktionen mäter hur långt det är till målet och om det
+ * är något högst 20 cm från sensorn undviker roboten den.
+ */
+bool subtask_needs_to_avoid_object();
+
+/*
+ * Hur långt roboten ska åka extra från väggen för att undvika
+ * ett hinder. Det här har satts till 50 cm eftersom roboten börjar
+ * 50 cm (50 cm + 50 cm = 100 cm) från väggen och korridoren kan ta
+ * slut redan vid 150 cm.
+ */
+#define AVOID_DISTANCE 0.5
+
+/*
+ * Flyttar roboten 50 cm extra från väggen och roterar åt rätt håll
+ * för att nå målet när den aktar sig från objektet.
+ */
+void subtask_setup_avoid(direction_t direction);
 
 #endif

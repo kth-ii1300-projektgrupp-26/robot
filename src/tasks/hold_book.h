@@ -5,11 +5,16 @@
  * till startpunkten.
  */
 
-#ifndef DROP_BOOK_H
-#define DROP_BOOK_H
+#ifndef HOLD_BOOK_H
+#define HOLD_BOOK_H
+
+#include "movement.h"
+
+/* Sätter på motorer för att hålla boken. */
+void task_hold_book();
 
 /* Utför uppgiften "Släpp av bok". */
-void task_drop_book();
+void task_drop_book(direction_t direction);
 
 /*
  * När roboten har nått fram till destination så är den ca 50 cm från väggen.
@@ -18,11 +23,5 @@ void task_drop_book();
  * väggen.
  */
 void subtask_position_for_drop();
-
-/*
- * I den här funktionen används den lilla motorn på roboten för att släppa boken.
- * subtask_position_for_drop() ser till så att boken hamnar rätt.
- */
-void subtask_drop_with_motor();
 
 #endif

@@ -1,6 +1,8 @@
 #include "tasks/find_wall.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 #include "movement.h"
 #include "ports.h"
@@ -9,19 +11,16 @@
 #include "sensors/gyro.h"
 
 void task_find_wall(bool to_other_side) {
-	float closest_angle = subtask_find_closest_wall_angle();
+	/* TODO: testa */
+	/* float closest_angle_left = subtask_find_closest_wall_angle(DIRECTION_LEFT); */
+	float closest_angle_right = subtask_find_closest_wall_angle(DIRECTION_RIGHT);
 
-	if(closest_angle == NO_WALL_FOUND) {
-		/* TODO: error */
+	if(closest_angle_right == NO_WALL_FOUND) {
+		printf("No wall found.\n");
+		exit(1);
 	}
 	else {
-		/* TODO: kontrollera det här. */
-		if(360 - closest_angle < closest_angle) {
-			rotate_robot(-360 + closest_angle);
-		}
-		else {
-			rotate_robot(closest_angle);
-		}
+		rotate_robot(closest_angle_right);
 
 		if(to_other_side) {
 			subtask_move_to_other_side();
@@ -29,24 +28,36 @@ void task_find_wall(bool to_other_side) {
 
 		subtask_control_distance_to_wall();
 	}
-
-	reset_gyro_sensor();
 }
 
-float subtask_find_closest_wall_angle() {
+float subtask_find_closest_wall_angle(direction_t rotation_direction) {
+	reset_gyro_sensor();
+
 	/* NO_WALL_FOUND = inget hittat än */
 	float closest_angle = NO_WALL_FOUND;
 	float closest_angle_distance = NO_WALL_FOUND;
-	float angle = sensor_get_value0(SENSOR_GYRO, 0);
 
-	/* Sätter roboten till att rotera höger. */
-	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.1; /* TODO: prova lägre hastighet och se om det är bättre. */
+	/* Sätter roboten till att rotera vänster eller höger. */
+	int speed = tacho_get_max_speed(MOTOR_LEFT, 0) * ROTATION_SPEED;
+	if(rotation_direction == DIRECTION_LEFT) {
+		speed = -speed;
+	}
+
 	tacho_set_speed_sp(MOTOR_LEFT, speed);
 	tacho_set_speed_sp(MOTOR_RIGHT, -speed);
 
 	tacho_run_forever(MOTOR_BOTH);
 
-	while(angle < 360 /* ett helt varv */) {
+	float angle = sensor_get_value0(SENSOR_GYRO, 0);
+	printf("subtask_find_closest_wall_angle(): angle at start %f\n", angle);
+
+	while(true) {
+		if(rotation_direction == DIRECTION_LEFT && angle <= -360) {
+			break;
+		}
+		if(rotation_direction == DIRECTION_RIGHT && angle >= 360) {
+			break;
+		}
 		if(can_find_object()) {
 			float distance = get_distance_to_object();
 
@@ -54,7 +65,7 @@ float subtask_find_closest_wall_angle() {
 			 * Om vi inte har hittat någon vägg tidigare ELLER om det är kortare
 			 * till den här väggen sätter vi det här som den nya "närmaste väggen".
 			 */
-			if(closest_angle_distance == NO_WALL_FOUND || distance <= closest_angle_distance) {
+			if(closest_angle_distance == NO_WALL_FOUND || distance < closest_angle_distance) {
 				closest_angle = angle;
 				closest_angle_distance = distance;
 			}
@@ -63,8 +74,20 @@ float subtask_find_closest_wall_angle() {
 		angle = sensor_get_value0(SENSOR_GYRO, 0);
 	}
 
+	printf("subtask_find_closest_wall_angle(): angle at end %f\n", angle);
+	printf("subtask_find_closest_wall_angle(): closest angle %f\n", closest_angle);
+	printf("subtask_find_closest_wall_angle(): closest angle distance %f\n", closest_angle_distance);
+
 	tacho_stop(MOTOR_BOTH);
-	return closest_angle;
+	sleep_ms(500);
+
+	if(rotation_direction == DIRECTION_LEFT) {
+		/* TODO: fel? */
+		return 360 - fabs(closest_angle);
+	}
+	else {
+		return closest_angle;
+	}
 }
 
 void subtask_move_to_other_side() {
@@ -81,30 +104,25 @@ void subtask_move_to_other_side() {
 	}
 
 	tacho_stop(MOTOR_BOTH);
+	sleep_ms(200);
 }
 
 void subtask_control_distance_to_wall() {
+	/* hur långt roboten är till väggen nu */
 	float distance = sensor_get_value0(SENSOR_ULTRASONIC, 0) / 1000;
+	int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.3;
+
 	if(can_find_object()){
+		float distance_to_50cm;
+		if(distance > 0.45 || distance < 0.55) {
 		// minst 45 cm högst 55 cm
-		if(distance < 0.45 || distance > 0.55)
-		{
-			int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0) * 0.1;
 
-		tacho_reset(MOTOR_BOTH);
-
-		printf("Moving forward for one second...\n");
-
-		tacho_set_speed_sp(MOTOR_BOTH, -max_speed * 0.1);
-		tacho_run_forever(MOTOR_BOTH);
-			tacho_run_forever(MOTOR_BOTH);
+			// matte: hur långt måste den åka för att vara 50 cm från väggen?
+			 distance_to_50cm = distance - 0.5;
+			move(distance_to_50cm, 0.3);
 		}
 
-
-	}
-	if (get_distance_to_object())
-	{
-
+		sleep_ms(1000);
 	}
 
 }

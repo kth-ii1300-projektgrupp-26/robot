@@ -20,8 +20,12 @@ void reset_gyro_sensor() {
 	sleep_ms(500);
 
 	gyro_set_mode_gyro_cal(SENSOR_GYRO);
-	sleep_ms(500);
+	sleep_ms(1000);
 
 	/* Sätter läget på gyron till att mäta både vinkel och rotationshastighet. */
 	gyro_set_mode_gyro_g_and_a(SENSOR_GYRO);
+
+	/* Gör mätning på robot för att nollställa gyro. */
+	sensor_get_value0(SENSOR_GYRO, 0);
+	sensor_get_value1(SENSOR_GYRO, 0);
 }

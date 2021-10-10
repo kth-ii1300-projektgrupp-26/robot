@@ -8,14 +8,15 @@
 #include "sensors/gyro.h"
 #include "sensors/ultrasonic.h"
 
-#include "tasks/drop_book.h"
+#include "tasks/hold_book.h"
 #include "tasks/find_wall.h"
 #include "tasks/move_and_avoid.h"
 
+#include "sounds.h"
+
 int main() {
-	/* TODO: dessa ska kunna väljas av lärare. */
-	direction_t direction = DIRECTION_LEFT;
-	bool to_other_side = true;
+	direction_t direction = BUILD_DIRECTION;
+	bool to_other_side = BUILD_TO_OTHER_SIDE;
 
 	if(!brick_init()) {
 		printf("Fel uppstod i brick_init().\n");
@@ -44,13 +45,14 @@ int main() {
 	tacho_reset(MOTOR_BOTH);
 	tacho_set_stop_action_brake(MOTOR_BOTH);
 
-	/* Sätter in rätt läge på gyro sensorn. */
-	reset_gyro_sensor();
 	/* Sätter läget på ultrasonic sensorn till att mäta kontinuerligt i centimeter. */
 	us_set_mode_us_dist_cm(SENSOR_ULTRASONIC);
 
-	printf("Done! The robot is now ready for delivery.\n");
+	/*backing_sound();*/
 
+	printf("Kör task_hold_book()!\n");
+	task_hold_book();
+	printf("Kör task_find_wall()!\n");
 	task_find_wall(to_other_side);
 
 	/*
@@ -66,8 +68,10 @@ int main() {
 		}
 	}
 
+	printf("Kör task_move_and_avoid()!\n");
 	task_move_and_avoid(direction);
-	task_drop_book();
+	printf("Kör task_drop_book()!\n");
+	task_drop_book(direction);
 
 	brick_uninit();
 	return 0;
