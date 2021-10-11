@@ -73,7 +73,33 @@ int main() {
 	printf("Kör task_drop_book()!\n");
 	task_drop_book(direction);
 
-	/* TODO: åk tillbaka till startpunkt */
+	/*
+	 * Vänd håll och kör programmet igen för att återgå till startpunkt. Får se
+	 * om det fungerar.
+	 */
+	if(direction == DIRECTION_LEFT) {
+		direction = DIRECTION_RIGHT;
+	}
+	else if(direction == DIRECTION_RIGHT) {
+		direction = DIRECTION_LEFT;
+	}
+
+	subtask_control_distance_to_wall();
+
+	if(to_other_side) {
+		subtask_move_to_other_side();
+		if(direction == DIRECTION_LEFT) {
+			direction = DIRECTION_RIGHT;
+		}
+		else if(direction == DIRECTION_RIGHT) {
+			direction = DIRECTION_LEFT;
+		}
+	}
+
+	printf("Kör task_hold_book() igen!\n");
+	task_hold_book();
+	printf("Kör task_move_and_avoid igen()!\n");
+	task_move_and_avoid(direction);
 
 	brick_uninit();
 	return 0;
