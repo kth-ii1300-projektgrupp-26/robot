@@ -73,6 +73,8 @@ int main() {
 	printf("Kör task_drop_book()!\n");
 	task_drop_book(direction);
 
+	/* TODO: åk tillbaka till startpunkt */
+
 	brick_uninit();
 	return 0;
 }

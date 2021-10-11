@@ -35,5 +35,6 @@ void subtask_position_for_drop(direction_t direction) {
 		rotate_robot(-90);
 	}
 
+	/* TODO: kolla den här */
 	move(-30,0.5);
 }

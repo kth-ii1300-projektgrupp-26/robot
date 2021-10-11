@@ -94,20 +94,13 @@ void subtask_setup_avoid(direction_t direction) {
 
 	move(AVOID_DISTANCE, 0.3);
 
+	/* TODO: testa det här */
+	float angle = 180 - atan(distance_left_before_avoid / AVOID_DISTANCE);
 	if(direction == DIRECTION_LEFT) {
-		rotate_robot(90);
-	}
-	if(direction == DIRECTION_RIGHT) {
-		rotate_robot(-90);
-	}
-
-	/* TODO: Det här är nog fel */
-	float angle = atan(distance_left_before_avoid / AVOID_DISTANCE);
-	if(direction == DIRECTION_LEFT) {
-		rotate_robot(-angle);
-	}
-	if(direction == DIRECTION_RIGHT) {
 		rotate_robot(angle);
+	}
+	if(direction == DIRECTION_RIGHT) {
+		rotate_robot(-angle);
 	}
 
 	float new_distance = sqrt(pow(distance_left_before_avoid, 2) + pow(AVOID_DISTANCE, 2));
