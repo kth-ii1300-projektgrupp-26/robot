@@ -30,20 +30,8 @@ I den här fasen befinner sig roboten riktad mot väggen som den ska åka brevid
 * Rotera åt rätt håll (+-90 grader) för att börja leveransen
 * Åka 250 cm rakt framåt och hålla koll på ultrasonic sensorn för att se om något är i vägen
 
-Roboten borde hela tiden hålla koll på hur långt det är kvar. Om den märker att sensorn tar upp något närmare än väntat (till exempel att det är 100 cm kvar till slutpunkten och det finns något 50 cm fram) så borde den göra följande:
-* Vända sig bort från väggen
-* Åka 20 cm
-* Vänd tillbaka till rätt håll och kolla om det fortfarande finns något framför den
-
-Om det fortfarande finns något framför den repeterar den förra steget. Om det är fritt fram måste den:
-* Åka lite till så att den vet att varken roboten eller boken kan krocka med hindret
-* Vänd tillbaka till rätt håll
-* Åka 50 cm
-* Vända sig mot väggen och kolla om det fortfarande finns ett hinder
-
-Roboten repeterar det fram tills hindret är borta. Om roboten har åkt 250 cm eller om det är borta så vänder den sig tillbaka mot väggen och åker in så att den befinner sig rätt för att släppa av boken.
-
-Den ger alltså upp med att undvika hindret om den är framme vid slutpunkten.
+Förklaring för "undvik objekt":
+![](avoid.png)
 
 **Steg 3 "Släpp av bok"**
 
@@ -62,7 +50,7 @@ TODO
 Om roboten hittar någonting i 20 cm framför sig den stoppar, vänder sig 45 grader och skanar för andra närligander objekt.
 
 Ifall det finns inte då:
-TODO 
+TODO
 
 Ifall det finns då:
 spara vinkel för den närligande objekt, lägg till 10 grader på den och kör en viss avstånd sen vända sig igen mot X och kör tills den når den.

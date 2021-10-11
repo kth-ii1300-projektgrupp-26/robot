@@ -11,6 +11,8 @@ motor_position_t goal_rotation;
 
 /* Vi undviker bara ett objekt per leverans. */
 bool has_avoided = false;
+/* Vinkel som robot måste rotera när leveransen är över om den har undvikt objekt. */
+float avoid_angle = 0;
 
 void task_move_and_avoid(direction_t direction) {
 	motor_position_t start_rotation;
@@ -25,7 +27,13 @@ void task_move_and_avoid(direction_t direction) {
 	}
 
 	if(has_avoided) {
-		/* TODO: roboten måste placera sig rätt om den har roterar till annan vinkel */
+		/* Slutför rotation som började i setup_avoid. Roboten pekar nu mot väggen. */
+		if(direction == DIRECTION_LEFT) {
+			rotate_robot(avoid_angle);
+		}
+		if(direction == DIRECTION_RIGHT) {
+			rotate_robot(-avoid_angle);
+		}
 	}
 
 	tacho_stop(MOTOR_BOTH);
@@ -49,6 +57,7 @@ void subtask_setup_move(direction_t direction) {
 bool subtask_update_move(direction_t direction) {
 	if(!has_avoided && subtask_needs_to_avoid_object()) {
 		subtask_setup_avoid(direction);
+		has_avoided = true;
 	}
 
 	return subtask_get_distance_left() > 0;
@@ -95,7 +104,9 @@ void subtask_setup_avoid(direction_t direction) {
 	move(AVOID_DISTANCE, 0.3);
 
 	/* TODO: testa det här */
-	float angle = 180 - atan(distance_left_before_avoid / AVOID_DISTANCE);
+	avoid_angle = atan(distance_left_before_avoid / AVOID_DISTANCE);
+	float angle = 180 - avoid_angle;
+
 	if(direction == DIRECTION_LEFT) {
 		rotate_robot(angle);
 	}
@@ -121,6 +132,4 @@ void subtask_setup_avoid(direction_t direction) {
 
 	tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.3);
 	tacho_run_forever(MOTOR_BOTH);
-
-	has_avoided = true;
 }
