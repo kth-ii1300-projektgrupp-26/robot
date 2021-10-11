@@ -4,8 +4,6 @@
 #include "movement.h"
 
 void task_drop_book(direction_t direction) {
-	subtask_position_for_drop(direction);
-
 	int motor_medium_speed = tacho_get_max_speed(MOTOR_MEDIUM,0);
 	int motor_medium_degree = tacho_get_position(MOTOR_MEDIUM,0);
 
@@ -26,15 +24,4 @@ void task_hold_book(){
 	tacho_set_speed_sp(MOTOR_MEDIUM, motor_medium_speed * 0.2);
 	tacho_run_forever(MOTOR_MEDIUM);
 
-}
-void subtask_position_for_drop(direction_t direction) {
-	if(direction == DIRECTION_LEFT) {
-		rotate_robot(90);
-	}
-	if(direction == DIRECTION_RIGHT) {
-		rotate_robot(-90);
-	}
-
-	/* TODO: kolla den här */
-	move(-30,0.5);
 }

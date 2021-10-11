@@ -34,7 +34,21 @@ void task_move_and_avoid(direction_t direction) {
 		if(direction == DIRECTION_RIGHT) {
 			rotate_robot(-avoid_angle);
 		}
+
+		/* TODO: hur långt från väggen hamnar vi? 50 cm? */
 	}
+	else {
+		/* Vänd roboten rakt mot väggen. */
+		if(direction == DIRECTION_LEFT) {
+			rotate_robot(90);
+		}
+		if(direction == DIRECTION_RIGHT) {
+			rotate_robot(-90);
+		}
+	}
+
+	/* Åk närmare väggen. Det är inte säkert att roboten åkte helt rakt. */
+	move(0.1, 0.3);
 
 	tacho_stop(MOTOR_BOTH);
 	sleep_ms(1000);

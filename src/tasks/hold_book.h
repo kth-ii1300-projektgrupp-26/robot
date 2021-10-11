@@ -16,12 +16,4 @@ void task_hold_book();
 /* Utför uppgiften "Släpp av bok". */
 void task_drop_book(direction_t direction);
 
-/*
- * När roboten har nått fram till destination så är den ca 50 cm från väggen.
- * I den här funktionen måste roboten rotera så att den kan släppa boken bakåt,
- * och den måste se till så att boken (inte roboten själv) hamnar 0-30 cm från
- * väggen.
- */
-void subtask_position_for_drop();
-
 #endif
