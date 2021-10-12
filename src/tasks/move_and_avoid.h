@@ -47,11 +47,11 @@ bool subtask_needs_to_avoid_object();
 
 /*
  * Hur långt roboten ska åka extra från väggen för att undvika
- * ett hinder. Det här har satts till 50 cm eftersom roboten börjar
- * 50 cm (50 cm + 50 cm = 100 cm) från väggen och korridoren kan ta
+ * ett hinder. Det här har satts till 75 cm eftersom roboten börjar
+ * 50 cm (50 cm + 75 cm = 125 cm) från väggen och korridoren kan ta
  * slut redan vid 150 cm.
  */
-#define AVOID_DISTANCE 0.5
+#define AVOID_DISTANCE 0.75
 
 /*
  * Flyttar roboten 50 cm extra från väggen och roterar åt rätt håll

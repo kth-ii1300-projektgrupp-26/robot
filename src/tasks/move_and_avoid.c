@@ -1,4 +1,5 @@
 #include "tasks/move_and_avoid.h"
+#include "tasks/find_wall.h"
 #include "movement.h"
 #include "ports.h"
 
@@ -6,6 +7,9 @@
 #include "sensors/ultrasonic.h"
 
 #include <math.h>
+#include <stdio.h>
+
+#include <stdlib.h>
 
 motor_position_t goal_rotation;
 
@@ -35,7 +39,8 @@ void task_move_and_avoid(direction_t direction) {
 			rotate_robot(-avoid_angle);
 		}
 
-		/* TODO: hur långt från väggen hamnar vi? 50 cm? */
+		/* has_avoided är en global variabel */
+		has_avoided = false;
 	}
 	else {
 		/* Vänd roboten rakt mot väggen. */
@@ -46,9 +51,6 @@ void task_move_and_avoid(direction_t direction) {
 			rotate_robot(-90);
 		}
 	}
-
-	/* Åk närmare väggen. Det är inte säkert att roboten åkte helt rakt. */
-	move(0.1, 0.3);
 
 	tacho_stop(MOTOR_BOTH);
 	sleep_ms(1000);
@@ -64,7 +66,7 @@ void subtask_setup_move(direction_t direction) {
 
 	int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0);
 
-	tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.3);
+	tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.2);
 	tacho_run_forever(MOTOR_BOTH);
 }
 
@@ -78,13 +80,13 @@ bool subtask_update_move(direction_t direction) {
 }
 
 float subtask_get_distance_left() {
-	motor_position_t rotation_left;
+	motor_position_t difference;
 
-	rotation_left.left =
+	difference.left =
 		goal_rotation.left -
 		tacho_get_position(MOTOR_LEFT, 0);
 
-	rotation_left.right =
+	difference.right =
 		goal_rotation.right -
 		tacho_get_position(MOTOR_RIGHT, 0);
 
@@ -92,19 +94,22 @@ float subtask_get_distance_left() {
 	 * Ta ett medelvärde av distans kvar på båda hjulen.
 	 * Borde vara samma, men inte säkert.
 	 */
-	float average_value = (rotation_left.left + rotation_left.right) / 2;
+	float average_value = (difference.left + difference.right) / 2;
 	return wheel_rotation_to_meter(average_value);
 }
 
 bool subtask_needs_to_avoid_object() {
 	return can_find_object() &&
-		/* Om det finns ett objekt högst 20 cm från roboten... */
-		get_distance_to_object() <= 0.2 &&
-		/* ...och roboten behöver åka minst 30 cm till. */
-		subtask_get_distance_left() >= 0.3;
+		/* Om det finns ett objekt högst 30 cm från roboten... */
+		get_distance_to_object() <= 0.3 &&
+		/* ...och roboten behöver åka minst 60 cm till. */
+		subtask_get_distance_left() >= 0.6;
 }
 
 void subtask_setup_avoid(direction_t direction) {
+	tacho_stop(MOTOR_BOTH);
+	system("beep -f 200 -l 1000");
+
 	printf("avoid: object at %f cm\n", get_distance_to_object() * 100);
 	float distance_left_before_avoid = subtask_get_distance_left();
 
@@ -115,11 +120,16 @@ void subtask_setup_avoid(direction_t direction) {
 		rotate_robot(90);
 	}
 
-	move(AVOID_DISTANCE, 0.3);
+	move(AVOID_DISTANCE, 0.2);
 
-	/* TODO: testa det här */
+	/* Förklaring i documentation/avoid.png (v1). */
 	avoid_angle = atan(distance_left_before_avoid / AVOID_DISTANCE);
+	/* Gör om angle från radianer till grader. */
+	avoid_angle = avoid_angle * (180 / M_PI);
+
+	/* Förklaring i documentation/avoid.png (v2). */
 	float angle = 180 - avoid_angle;
+	printf("avoid_angle: %f, angle: %f\n", avoid_angle, angle);
 
 	if(direction == DIRECTION_LEFT) {
 		rotate_robot(angle);
@@ -129,6 +139,7 @@ void subtask_setup_avoid(direction_t direction) {
 	}
 
 	float new_distance = sqrt(pow(distance_left_before_avoid, 2) + pow(AVOID_DISTANCE, 2));
+
 	printf(
 		"avoid: angle %f old distance %f cm new distance %f cm\n",
 		angle,
@@ -139,11 +150,15 @@ void subtask_setup_avoid(direction_t direction) {
 	start_rotation.left = tacho_get_position(MOTOR_LEFT, 0);
 	start_rotation.right = tacho_get_position(MOTOR_RIGHT, 0);
 
+	/*
+	 * Uppdatera hur mycket hjulen behöver rulla för att vara framme vid målet, då
+	 * vi nu följer hypotenusan i en rätvinklig triangel.
+	 */
 	goal_rotation.left = start_rotation.left + meter_to_wheel_rotation(new_distance);
 	goal_rotation.right = start_rotation.right + meter_to_wheel_rotation(new_distance);
 
 	int max_speed = tacho_get_max_speed(MOTOR_LEFT, 0);
 
-	tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.3);
+	tacho_set_speed_sp(MOTOR_BOTH, max_speed * 0.2);
 	tacho_run_forever(MOTOR_BOTH);
 }

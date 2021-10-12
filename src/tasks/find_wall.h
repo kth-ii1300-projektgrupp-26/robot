@@ -38,9 +38,9 @@ float subtask_find_closest_wall_angle();
 void subtask_move_to_other_side();
 
 /*
- * Kontrollerar att roboten är 50 cm från väggen. Om inte
+ * Kontrollerar att roboten är target_distance från väggen. Om inte
  * så backar den eller åker framåt för att hamna rätt.
  */
-void subtask_control_distance_to_wall();
+void subtask_control_distance_to_wall(float target_distance);
 
 #endif

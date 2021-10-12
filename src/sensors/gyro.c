@@ -25,7 +25,7 @@ void reset_gyro_sensor() {
 	/* Sätter läget på gyron till att mäta både vinkel och rotationshastighet. */
 	gyro_set_mode_gyro_g_and_a(SENSOR_GYRO);
 
-	/* Gör mätning på robot för att nollställa gyro. */
+	/* Gör mätning på robot för att nollställa gyro. Första värdet är alltid fel. */
 	sensor_get_value0(SENSOR_GYRO, 0);
 	sensor_get_value1(SENSOR_GYRO, 0);
 }
